@@ -1,0 +1,23 @@
+FROM oven/bun:alpine AS builder
+
+WORKDIR /app
+
+COPY frontend /app
+
+RUN bun i
+
+ENV VITE_BACKEND_URL=/
+
+RUN bun run build
+
+FROM alpine
+
+WORKDIR /var/www/app
+
+COPY --from=builder /app/dist .
+
+RUN apk add brotli nginx nginx-mod-http-brotli
+
+COPY ./nginx.conf /etc/nginx/http.d/default.conf
+
+CMD ["nginx", "-g", "daemon off;"]

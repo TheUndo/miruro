@@ -1,0 +1,27 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - ./etc/redis-data:/data
+
+  proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - ${PORT}:80
