@@ -16,6 +16,7 @@ const SKIP_TIMES = ensureUrlEndsWithSlash(
 let PROXY_URL = import.meta.env.VITE_PROXY_URL; // Default to an empty string if no proxy URL is provided
 // Check if the proxy URL is provided and ensure it ends with a slash
 if (PROXY_URL) {
+  console.log(import.meta.env)
   PROXY_URL = ensureUrlEndsWithSlash(import.meta.env.VITE_PROXY_URL as string);
 }
 
