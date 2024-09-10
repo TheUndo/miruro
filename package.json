@@ -1,0 +1,17 @@
+{
+	"name": "miruro",
+	"module": "index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@biomejs/biome": "1",
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "5"
+	},
+	"workspaces": [
+		"frontend",
+		"api",
+		"server"
+	]
+}

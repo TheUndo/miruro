@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "bun run --watch .",
+    "compile": "bun build --outfile=dist/main.js --sourcemap=inline --target=bun .",
+    "start": "bun run dist/main.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "zod": "^3.23.8"
+  }
+}

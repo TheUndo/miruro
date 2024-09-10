@@ -1,55 +1,56 @@
-import React, { useEffect, useCallback } from 'react';
-import styled from 'styled-components';
-import { CardItem, Anime } from '../../index';
+import type React from "react";
+import { useCallback, useEffect } from "react";
+import styled from "styled-components";
+import { type Anime, CardItem } from "../../index";
 
 interface CardGridProps {
-  animeData: Anime[];
-  hasNextPage: boolean;
-  onLoadMore: () => void;
+	animeData: Anime[];
+	hasNextPage: boolean;
+	onLoadMore: () => void;
 }
 
 export const CardGrid: React.FC<CardGridProps> = ({
-  animeData,
-  hasNextPage,
-  onLoadMore,
+	animeData,
+	hasNextPage,
+	onLoadMore,
 }) => {
-  const handleLoadMore = useCallback(() => {
-    if (hasNextPage) {
-      onLoadMore();
-    }
-  }, [hasNextPage, onLoadMore]);
+	const handleLoadMore = useCallback(() => {
+		if (hasNextPage) {
+			onLoadMore();
+		}
+	}, [hasNextPage, onLoadMore]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.offsetHeight;
-      const scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop;
+	useEffect(() => {
+		const handleScroll = () => {
+			const windowHeight = window.innerHeight;
+			const documentHeight = document.documentElement.offsetHeight;
+			const scrollTop =
+				document.documentElement.scrollTop || document.body.scrollTop;
 
-      let threshold = 0;
+			let threshold = 0;
 
-      if (window.innerWidth <= 450) {
-        threshold = 1;
-      }
+			if (window.innerWidth <= 450) {
+				threshold = 1;
+			}
 
-      if (windowHeight + scrollTop >= documentHeight - threshold) {
-        handleLoadMore();
-      }
-    };
+			if (windowHeight + scrollTop >= documentHeight - threshold) {
+				handleLoadMore();
+			}
+		};
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [handleLoadMore, hasNextPage]);
+		window.addEventListener("scroll", handleScroll);
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, [handleLoadMore, hasNextPage]);
 
-  return (
-    <StyledCardGrid>
-      {animeData.map((anime) => (
-        <CardItem key={anime.id} anime={anime} />
-      ))}
-    </StyledCardGrid>
-  );
+	return (
+		<StyledCardGrid>
+			{animeData.map((anime) => (
+				<CardItem key={anime.id} anime={anime} />
+			))}
+		</StyledCardGrid>
+	);
 };
 
 export const StyledCardGrid = styled.div`

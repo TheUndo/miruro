@@ -1,5 +1,5 @@
-import React from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import React from "react";
+import styled, { keyframes, css } from "styled-components";
 
 const pulseAnimation = keyframes`
   0%, 100% { background-color: var(--global-primary-skeleton); }
@@ -54,11 +54,11 @@ const SkeletonDetails = styled(SkeletonTitle)`
 `;
 
 export const SkeletonCard = React.memo(() => (
-  <SkeletonCards>
-    <SkeletonTitle />
-    <SkeletonDetails />
-    <SkeletonDetails />
-  </SkeletonCards>
+	<SkeletonCards>
+		<SkeletonTitle />
+		<SkeletonDetails />
+		<SkeletonDetails />
+	</SkeletonCards>
 ));
 
 const SkeletonSlides = styled(BaseSkeleton)<{ loading?: boolean }>`
@@ -74,11 +74,11 @@ const SkeletonSlides = styled(BaseSkeleton)<{ loading?: boolean }>`
 `;
 
 export const SkeletonSlide: React.FC<{ loading?: boolean }> = React.memo(
-  ({ loading }) => (
-    <SkeletonSlides loading={loading}>
-      <SkeletonImage />
-    </SkeletonSlides>
-  ),
+	({ loading }) => (
+		<SkeletonSlides loading={loading}>
+			<SkeletonImage />
+		</SkeletonSlides>
+	),
 );
 
 const SkeletonContainer = styled.div`
@@ -107,10 +107,10 @@ const PlayerButtons = styled(BaseSkeleton)`
 `;
 
 export const SkeletonPlayer = React.memo(() => (
-  <SkeletonContainer>
-    <PlayerSkeleton />
-    <PlayerButtons />
-  </SkeletonContainer>
+	<SkeletonContainer>
+		<PlayerSkeleton />
+		<PlayerButtons />
+	</SkeletonContainer>
 ));
 
 const SkeletonImage = styled(BaseSkeleton)`

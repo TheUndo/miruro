@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { FaTimes } from 'react-icons/fa';
+import { useEffect, useState } from "react";
+import { FaTimes } from "react-icons/fa";
+import styled from "styled-components";
 
 const Overlay = styled.table`
   font-size: 0.85rem;
@@ -79,130 +79,130 @@ const PopUp = styled.thead`
 `;
 
 const KeyboardShortcutsPopup = ({ onClose }: { onClose: () => void }) => {
-  return (
-    <Overlay onClick={onClose}>
-      <PopUp className='popup-content' onClick={(e) => e.stopPropagation()}>
-        <div
-          style={{
-            background: 'var(--global-div)',
-            borderRadius: 'var(--global-border-radius)',
-            padding: '0.5rem',
-          }}
-        >
-          <tr>
-            <td>
-              <CloseButton onClick={onClose}>
-                <FaTimes size={'1rem'} />
-              </CloseButton>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Keyboard Shortcuts</strong>(shift+/)
-            </td>
-          </tr>
-        </div>
-        <div
-          style={{
-            background: 'var(--global-div)',
-            borderRadius: 'var(--global-border-radius)',
-            padding: '0.5rem',
-          }}
-        >
-          <tr>
-            <Column1>Play/Pause Toggle</Column1>
-            <Column2>K / Space</Column2>
-          </tr>
-          <tr>
-            <Column1>Seek Backward 10 Seconds</Column1>
-            <Column2>J</Column2>
-          </tr>
-          <tr>
-            <Column1>Seek Forward 10 Seconds</Column1>
-            <Column2>L</Column2>
-          </tr>
-          <tr>
-            <Column1>Toggle Fullscreen</Column1>
-            <Column2>F</Column2>
-          </tr>
-          <tr>
-            <Column1>Toggle Mute</Column1>
-            <Column2>M</Column2>
-          </tr>
-          <tr>
-            <Column1>Previous Episode</Column1>
-            <Column2>(SHIFT+P)</Column2>
-          </tr>
-          <tr>
-            <Column1>Next Episode</Column1>
-            <Column2>(SHIFT+N)</Column2>
-          </tr>
-          <tr>
-            <Column1>Increase Volume</Column1>
-            <Column2>Arrow Up</Column2>
-          </tr>
-          <tr>
-            <Column1>Decrease Volume</Column1>
-            <Column2>Arrow Down</Column2>
-          </tr>
-          <tr>
-            <Column1>Seek Forward 5 Seconds</Column1>
-            <Column2>Arrow Right</Column2>
-          </tr>
-          <tr>
-            <Column1>Seek Backward 5 Seconds</Column1>
-            <Column2>Arrow Left</Column2>
-          </tr>
-          <tr>
-            <Column1>Increase Playback Speed</Column1>
-            <Column2>&gt; (SHIFT+,)</Column2>
-          </tr>
-          <tr>
-            <Column1>Decrease Playback Speed</Column1>
-            <Column2>&lt; (SHIFT+.)</Column2>
-          </tr>
-          <tr>
-            <Column1>Jump to Percentage (0-90%)</Column1>
-            <Column2>0-9</Column2>
-          </tr>
-        </div>
-      </PopUp>
-    </Overlay>
-  );
+	return (
+		<Overlay onClick={onClose}>
+			<PopUp className="popup-content" onClick={(e) => e.stopPropagation()}>
+				<div
+					style={{
+						background: "var(--global-div)",
+						borderRadius: "var(--global-border-radius)",
+						padding: "0.5rem",
+					}}
+				>
+					<tr>
+						<td>
+							<CloseButton onClick={onClose}>
+								<FaTimes size={"1rem"} />
+							</CloseButton>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Keyboard Shortcuts</strong>(shift+/)
+						</td>
+					</tr>
+				</div>
+				<div
+					style={{
+						background: "var(--global-div)",
+						borderRadius: "var(--global-border-radius)",
+						padding: "0.5rem",
+					}}
+				>
+					<tr>
+						<Column1>Play/Pause Toggle</Column1>
+						<Column2>K / Space</Column2>
+					</tr>
+					<tr>
+						<Column1>Seek Backward 10 Seconds</Column1>
+						<Column2>J</Column2>
+					</tr>
+					<tr>
+						<Column1>Seek Forward 10 Seconds</Column1>
+						<Column2>L</Column2>
+					</tr>
+					<tr>
+						<Column1>Toggle Fullscreen</Column1>
+						<Column2>F</Column2>
+					</tr>
+					<tr>
+						<Column1>Toggle Mute</Column1>
+						<Column2>M</Column2>
+					</tr>
+					<tr>
+						<Column1>Previous Episode</Column1>
+						<Column2>(SHIFT+P)</Column2>
+					</tr>
+					<tr>
+						<Column1>Next Episode</Column1>
+						<Column2>(SHIFT+N)</Column2>
+					</tr>
+					<tr>
+						<Column1>Increase Volume</Column1>
+						<Column2>Arrow Up</Column2>
+					</tr>
+					<tr>
+						<Column1>Decrease Volume</Column1>
+						<Column2>Arrow Down</Column2>
+					</tr>
+					<tr>
+						<Column1>Seek Forward 5 Seconds</Column1>
+						<Column2>Arrow Right</Column2>
+					</tr>
+					<tr>
+						<Column1>Seek Backward 5 Seconds</Column1>
+						<Column2>Arrow Left</Column2>
+					</tr>
+					<tr>
+						<Column1>Increase Playback Speed</Column1>
+						<Column2>&gt; (SHIFT+,)</Column2>
+					</tr>
+					<tr>
+						<Column1>Decrease Playback Speed</Column1>
+						<Column2>&lt; (SHIFT+.)</Column2>
+					</tr>
+					<tr>
+						<Column1>Jump to Percentage (0-90%)</Column1>
+						<Column2>0-9</Column2>
+					</tr>
+				</div>
+			</PopUp>
+		</Overlay>
+	);
 };
 
 export const ShortcutsPopup = () => {
-  const [showPopup, setShowPopup] = useState(false);
+	const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(() => {
-    const togglePopupWithShortcut = (e: KeyboardEvent) => {
-      if (
-        e.target &&
-        ['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as Element).tagName)
-      ) {
-        return;
-      }
+	useEffect(() => {
+		const togglePopupWithShortcut = (e: KeyboardEvent) => {
+			if (
+				e.target &&
+				["INPUT", "TEXTAREA", "SELECT"].includes((e.target as Element).tagName)
+			) {
+				return;
+			}
 
-      if (e.shiftKey && e.key === '?') {
-        e.preventDefault();
-        setShowPopup(!showPopup);
-      } else if (e.key === 'Escape') {
-        setShowPopup(false);
-      }
-    };
+			if (e.shiftKey && e.key === "?") {
+				e.preventDefault();
+				setShowPopup(!showPopup);
+			} else if (e.key === "Escape") {
+				setShowPopup(false);
+			}
+		};
 
-    window.addEventListener('keydown', togglePopupWithShortcut);
+		window.addEventListener("keydown", togglePopupWithShortcut);
 
-    return () => {
-      window.removeEventListener('keydown', togglePopupWithShortcut);
-    };
-  }, [showPopup]);
+		return () => {
+			window.removeEventListener("keydown", togglePopupWithShortcut);
+		};
+	}, [showPopup]);
 
-  const togglePopup = () => setShowPopup(!showPopup);
+	const togglePopup = () => setShowPopup(!showPopup);
 
-  return (
-    <div className='App'>
-      {showPopup && <KeyboardShortcutsPopup onClose={togglePopup} />}
-    </div>
-  );
+	return (
+		<div className="App">
+			{showPopup && <KeyboardShortcutsPopup onClose={togglePopup} />}
+		</div>
+	);
 };

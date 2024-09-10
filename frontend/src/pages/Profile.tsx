@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { IoLogOutOutline } from 'react-icons/io5';
-import { useAuth, EpisodeCard, WatchingAnilist } from '../index';
-import { SiAnilist } from 'react-icons/si';
-import { CgProfile } from 'react-icons/cg';
-import { useNavigate } from 'react-router-dom';
-import { FiSettings } from 'react-icons/fi';
+import type React from "react";
+import { useEffect } from "react";
+import { CgProfile } from "react-icons/cg";
+import { FiSettings } from "react-icons/fi";
+import { IoLogOutOutline } from "react-icons/io5";
+import { SiAnilist } from "react-icons/si";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { EpisodeCard, WatchingAnilist, useAuth } from "../index";
 
 const TopContainer = styled.div`
   display: flex;
@@ -82,24 +83,24 @@ const Loginbutton = styled.div`
 `;
 // Profile component
 export const Profile: React.FC = () => {
-  const navigate = useNavigate();
-  const { isLoggedIn, userData, login, logout } = useAuth();
+	const navigate = useNavigate();
+	const { isLoggedIn, userData, login, logout } = useAuth();
 
-  // Profile Page Document Title
-  useEffect(() => {
-    document.title =
-      isLoggedIn && userData ? `${userData.name} | Profile` : 'Profile';
-  }, [isLoggedIn, userData]);
+	// Profile Page Document Title
+	useEffect(() => {
+		document.title =
+			isLoggedIn && userData ? `${userData.name} | Profile` : "Profile";
+	}, [isLoggedIn, userData]);
 
-  const handleSettingsClick = () => {
-    navigate('/profile/settings');
-  };
+	const handleSettingsClick = () => {
+		navigate("/profile/settings");
+	};
 
-  return (
-    <PreferencesContainer>
-      <TopContainer>
-        <ProfileContainer>
-          {/* <Loginbutton
+	return (
+		<PreferencesContainer>
+			<TopContainer>
+				<ProfileContainer>
+					{/* <Loginbutton
             onClick={handleSettingsClick}
             style={{
               position: 'absolute',
@@ -110,62 +111,62 @@ export const Profile: React.FC = () => {
           >
             <FiSettings size={22} />
           </Loginbutton> */}
-          {isLoggedIn && userData ? (
-            <>
-              <img
-                src={userData.avatar.large}
-                alt={`${userData.name}'s avatar`}
-              />
-              <p>
-                Welcome, <b>{userData.name}</b>
-              </p>
-              {userData.statistics && (
-                <>
-                  <p>
-                    Anime watched: <b>{userData.statistics.anime.count}</b>
-                  </p>
-                  <p>
-                    Total episodes watched:{' '}
-                    <b>{userData.statistics.anime.episodesWatched}</b>
-                  </p>
-                  <p>
-                    Total minutes watched:{' '}
-                    <b>{userData.statistics.anime.minutesWatched}</b>
-                  </p>
-                  <p>
-                    Average score:{' '}
-                    <b>{userData.statistics.anime.meanScore.toFixed(2)}</b>
-                  </p>
-                </>
-              )}
-              <Loginbutton onClick={logout}>
-                <b>Log out </b>
-                <span className='svg-wrapper'>
-                  <IoLogOutOutline />
-                </span>
-              </Loginbutton>
-            </>
-          ) : (
-            <UserInfoContainer>
-              <CgProfile size={'5rem'} style={{ marginBottom: '1rem' }} />
-              <p>Guest</p>
-              <p>Please log in to view your profile and AniList</p>
-              <a onClick={login}>
-                <Loginbutton>
-                  <b>Log in with </b>
-                  <span className='svg-wrapper'>
-                    <SiAnilist />
-                  </span>
-                </Loginbutton>
-              </a>
-            </UserInfoContainer>
-          )}
-        </ProfileContainer>
-      </TopContainer>
-      <EpisodeCard />
-      <WatchingAnilist />
-    </PreferencesContainer>
-  );
+					{isLoggedIn && userData ? (
+						<>
+							<img
+								src={userData.avatar.large}
+								alt={`${userData.name}'s avatar`}
+							/>
+							<p>
+								Welcome, <b>{userData.name}</b>
+							</p>
+							{userData.statistics && (
+								<>
+									<p>
+										Anime watched: <b>{userData.statistics.anime.count}</b>
+									</p>
+									<p>
+										Total episodes watched:{" "}
+										<b>{userData.statistics.anime.episodesWatched}</b>
+									</p>
+									<p>
+										Total minutes watched:{" "}
+										<b>{userData.statistics.anime.minutesWatched}</b>
+									</p>
+									<p>
+										Average score:{" "}
+										<b>{userData.statistics.anime.meanScore.toFixed(2)}</b>
+									</p>
+								</>
+							)}
+							<Loginbutton onClick={logout}>
+								<b>Log out </b>
+								<span className="svg-wrapper">
+									<IoLogOutOutline />
+								</span>
+							</Loginbutton>
+						</>
+					) : (
+						<UserInfoContainer>
+							<CgProfile size={"5rem"} style={{ marginBottom: "1rem" }} />
+							<p>Guest</p>
+							<p>Please log in to view your profile and AniList</p>
+							<a onClick={login}>
+								<Loginbutton>
+									<b>Log in with </b>
+									<span className="svg-wrapper">
+										<SiAnilist />
+									</span>
+								</Loginbutton>
+							</a>
+						</UserInfoContainer>
+					)}
+				</ProfileContainer>
+			</TopContainer>
+			<EpisodeCard />
+			<WatchingAnilist />
+		</PreferencesContainer>
+	);
 };
 
 export default Profile;

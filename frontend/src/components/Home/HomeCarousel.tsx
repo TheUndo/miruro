@@ -1,13 +1,13 @@
-import { FC } from 'react';
-import styled from 'styled-components';
-import { FaPlay } from 'react-icons/fa';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css';
-import { useNavigate } from 'react-router-dom';
-import { SkeletonSlide, Anime } from '../../index';
-import { TbCards } from 'react-icons/tb';
-import { FaStar } from 'react-icons/fa';
-import { FaClock } from 'react-icons/fa6';
+import type { FC } from "react";
+import { FaPlay } from "react-icons/fa";
+import styled from "styled-components";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import { FaStar } from "react-icons/fa";
+import { FaClock } from "react-icons/fa6";
+import { TbCards } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
+import { type Anime, SkeletonSlide } from "../../index";
 
 const StyledSwiperContainer = styled(Swiper)`
   position: relative;
@@ -121,7 +121,7 @@ const SlideInfoItem = styled.p`
 `;
 
 const SlideDescription = styled.p<{
-  $maxLines: boolean;
+	$maxLines: boolean;
 }>`
   color: var(--white, #ccc);
   background: transparent;
@@ -147,7 +147,7 @@ const SlideDescription = styled.p<{
   }
 
   /* Add overflow-y: auto if the content exceeds max height */
-  overflow-y: ${({ $maxLines }) => ($maxLines ? 'auto' : 'hidden')};
+  overflow-y: ${({ $maxLines }) => ($maxLines ? "auto" : "hidden")};
 `;
 
 const PlayButtonWrapper = styled.div`
@@ -219,141 +219,136 @@ const PaginationStyle = styled.div`
 
 // Adjust the Carousel component to use correctly typed props and state
 interface HomeCarouselProps {
-  data: Anime[];
-  loading: boolean;
-  error?: string | null;
+	data: Anime[];
+	loading: boolean;
+	error?: string | null;
 }
 
 export const HomeCarousel: FC<HomeCarouselProps> = ({
-  data = [],
-  loading,
-  error,
+	data = [],
+	loading,
+	error,
 }) => {
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  const handlePlayButtonClick = (id: string) => {
-    navigate(`/watch/${id}`);
-  };
+	const handlePlayButtonClick = (id: string) => {
+		navigate(`/watch/${id}`);
+	};
 
-  const truncateTitle = (title: string, maxLength: number = 40): string => {
-    return title.length > maxLength
-      ? `${title.substring(0, maxLength)}...`
-      : title;
-  };
+	const truncateTitle = (title: string, maxLength = 40): string => {
+		return title.length > maxLength
+			? `${title.substring(0, maxLength)}...`
+			: title;
+	};
 
-  const validData = data.filter(
-    (item) =>
-      item.title &&
-      item.title.english &&
-      item.description &&
-      item.cover !== item.image,
-  );
+	const validData = data.filter(
+		(item) =>
+			item.title?.english && item.description && item.cover !== item.image,
+	);
 
-  // const formatGenres = (genres: string[]): string => genres.join(', ');
+	// const formatGenres = (genres: string[]): string => genres.join(', ');
 
-  return (
-    <>
-      {loading || error ? (
-        <SkeletonSlide />
-      ) : (
-        <PaginationStyle>
-          <StyledSwiperContainer
-            spaceBetween={30}
-            slidesPerView={1}
-            loop={true}
-            autoplay={{
-              delay: 5000,
-              disableOnInteraction: false,
-            }}
-            navigation={{
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
-            }}
-            pagination={{
-              el: '.swiper-pagination',
-              clickable: true,
-              dynamicBullets: true,
-              type: 'bullets',
-            }}
-            freeMode={false}
-            virtual={true}
-            grabCursor={true}
-            keyboard={true}
-            centeredSlides={true}
-          >
-            {validData.map(
-              ({
-                id,
-                cover,
-                title,
-                description,
-                // status,
-                rating,
-                // genres,
-                totalEpisodes,
-                duration,
-                type,
-              }) => (
-                <StyledSwiperSlide
-                  key={id}
-                  title={title.english || title.romaji}
-                >
-                  <SlideImageWrapper>
-                    <SlideImage
-                      src={cover}
-                      alt={title.english || title.romaji + ' Banner Image'}
-                      loading='eager'
-                    />
-                    <ContentWrapper>
-                      <SlideContent>
-                        <SlideTitle>{truncateTitle(title.english)}</SlideTitle>
-                        <SlideInfo>
-                          {type && <SlideInfoItem>{type}</SlideInfoItem>}
-                          {totalEpisodes && (
-                            <SlideInfoItem>
-                              <TbCards />
-                              {totalEpisodes}
-                            </SlideInfoItem>
-                          )}
-                          {rating && (
-                            <SlideInfoItem>
-                              <FaStar />
-                              {rating}
-                            </SlideInfoItem>
-                          )}
-                          {duration && (
-                            <SlideInfoItem>
-                              <FaClock />
-                              {duration}mins
-                            </SlideInfoItem>
-                          )}
-                        </SlideInfo>
-                        <SlideDescription
-                          dangerouslySetInnerHTML={{ __html: description }}
-                          $maxLines={description.length > 200}
-                        />
-                      </SlideContent>
-                      <PlayButtonWrapper>
-                        <PlayButton
-                          onClick={() => handlePlayButtonClick(id)}
-                          title={
-                            'Watch ' + (title.english || title.romaji) + ' Now'
-                          }
-                        >
-                          <PlayIcon />
-                          <span>WATCH NOW</span>
-                        </PlayButton>
-                      </PlayButtonWrapper>
-                    </ContentWrapper>
-                    <DarkOverlay />
-                  </SlideImageWrapper>
-                </StyledSwiperSlide>
-              ),
-            )}
-            <div className='swiper-pagination'></div>
-          </StyledSwiperContainer>
-        </PaginationStyle>
-      )}
-    </>
-  );
+	return (
+		<>
+			{loading || error ? (
+				<SkeletonSlide />
+			) : (
+				<PaginationStyle>
+					<StyledSwiperContainer
+						spaceBetween={30}
+						slidesPerView={1}
+						loop={true}
+						autoplay={{
+							delay: 5000,
+							disableOnInteraction: false,
+						}}
+						navigation={{
+							nextEl: ".swiper-button-next",
+							prevEl: ".swiper-button-prev",
+						}}
+						pagination={{
+							el: ".swiper-pagination",
+							clickable: true,
+							dynamicBullets: true,
+							type: "bullets",
+						}}
+						freeMode={false}
+						virtual={true}
+						grabCursor={true}
+						keyboard={true}
+						centeredSlides={true}
+					>
+						{validData.map(
+							({
+								id,
+								cover,
+								title,
+								description,
+								// status,
+								rating,
+								// genres,
+								totalEpisodes,
+								duration,
+								type,
+							}) => (
+								<StyledSwiperSlide
+									key={id}
+									title={title.english || title.romaji}
+								>
+									<SlideImageWrapper>
+										<SlideImage
+											src={cover}
+											alt={title.english || `${title.romaji} Banner Image`}
+											loading="eager"
+										/>
+										<ContentWrapper>
+											<SlideContent>
+												<SlideTitle>{truncateTitle(title.english)}</SlideTitle>
+												<SlideInfo>
+													{type && <SlideInfoItem>{type}</SlideInfoItem>}
+													{totalEpisodes && (
+														<SlideInfoItem>
+															<TbCards />
+															{totalEpisodes}
+														</SlideInfoItem>
+													)}
+													{rating && (
+														<SlideInfoItem>
+															<FaStar />
+															{rating}
+														</SlideInfoItem>
+													)}
+													{duration && (
+														<SlideInfoItem>
+															<FaClock />
+															{duration}mins
+														</SlideInfoItem>
+													)}
+												</SlideInfo>
+												<SlideDescription
+													dangerouslySetInnerHTML={{ __html: description }}
+													$maxLines={description.length > 200}
+												/>
+											</SlideContent>
+											<PlayButtonWrapper>
+												<PlayButton
+													onClick={() => handlePlayButtonClick(id)}
+													title={`Watch ${title.english || title.romaji} Now`}
+												>
+													<PlayIcon />
+													<span>WATCH NOW</span>
+												</PlayButton>
+											</PlayButtonWrapper>
+										</ContentWrapper>
+										<DarkOverlay />
+									</SlideImageWrapper>
+								</StyledSwiperSlide>
+							),
+						)}
+						<div className="swiper-pagination" />
+					</StyledSwiperContainer>
+				</PaginationStyle>
+			)}
+		</>
+	);
 };

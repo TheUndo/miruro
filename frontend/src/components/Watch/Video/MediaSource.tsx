@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import type React from "react";
+import { useState } from "react";
 import {
-  FaMicrophone,
-  FaClosedCaptioning,
-  FaBell,
-  FaDownload,
-  FaShare,
-} from 'react-icons/fa';
+	FaBell,
+	FaClosedCaptioning,
+	FaDownload,
+	FaMicrophone,
+	FaShare,
+} from "react-icons/fa";
+import styled from "styled-components";
 
 // Props interface
 interface MediaSourceProps {
-  sourceType: string;
-  setSourceType: (sourceType: string) => void;
-  language: string;
-  setLanguage: (language: string) => void;
-  downloadLink: string;
-  episodeId?: string;
-  airingTime?: string;
-  nextEpisodenumber?: string;
+	sourceType: string;
+	setSourceType: (sourceType: string) => void;
+	language: string;
+	setLanguage: (language: string) => void;
+	downloadLink: string;
+	episodeId?: string;
+	airingTime?: string;
+	nextEpisodenumber?: string;
 }
 
 // Adjust the Container for responsive layout
@@ -182,177 +183,177 @@ const EpisodeInfoColumn = styled.div`
 `;
 
 export const MediaSource: React.FC<MediaSourceProps> = ({
-  sourceType,
-  setSourceType,
-  language,
-  setLanguage,
-  downloadLink,
-  episodeId,
-  airingTime,
-  nextEpisodenumber,
+	sourceType,
+	setSourceType,
+	language,
+	setLanguage,
+	downloadLink,
+	episodeId,
+	airingTime,
+	nextEpisodenumber,
 }) => {
-  const [isCopied, setIsCopied] = useState(false);
+	const [isCopied, setIsCopied] = useState(false);
 
-  const handleShareClick = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
-  };
+	const handleShareClick = () => {
+		navigator.clipboard.writeText(window.location.href);
+		setIsCopied(true);
+		setTimeout(() => {
+			setIsCopied(false);
+		}, 2000);
+	};
 
-  return (
-    <UpdatedContainer>
-      <EpisodeInfoColumn>
-        {episodeId ? (
-          <>
-            You're watching <strong>Episode {episodeId}</strong>
-            <DownloadLink
-              href={downloadLink}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <FaDownload />
-            </DownloadLink>
-            <ShareButton onClick={handleShareClick}>
-              <FaShare />
-            </ShareButton>
-            {isCopied && <p>Copied to clipboard!</p>}
-            <br />
-            <br />
-            <p>If current servers don't work, please try other servers.</p>
-          </>
-        ) : (
-          'Loading episode information...'
-        )}
-        {airingTime && (
-          <>
-            <p>
-              Episode <strong>{nextEpisodenumber}</strong> will air in{' '}
-              <FaBell />
-              <strong> {airingTime}</strong>.
-            </p>
-          </>
-        )}
-      </EpisodeInfoColumn>
-      <ResponsiveTableContainer>
-        <Table>
-          <tbody>
-            <TableRow>
-              <TableCell>
-                <FaClosedCaptioning /> Sub
-              </TableCell>
-              <TableCell>
-                <ButtonWrapper>
-                  <Button
-                    className={
-                      sourceType === 'default' && language === 'sub'
-                        ? 'active'
-                        : ''
-                    }
-                    onClick={() => {
-                      setSourceType('default');
-                      setLanguage('sub');
-                    }}
-                  >
-                    Default
-                  </Button>
-                </ButtonWrapper>
-              </TableCell>
-              <TableCell>
-                <ButtonWrapper>
-                  <Button
-                    className={
-                      sourceType === 'vidstreaming' && language === 'sub'
-                        ? 'active'
-                        : ''
-                    }
-                    onClick={() => {
-                      setSourceType('vidstreaming');
-                      setLanguage('sub');
-                    }}
-                  >
-                    Vidstream
-                  </Button>
-                </ButtonWrapper>
-              </TableCell>
-              <TableCell>
-                <ButtonWrapper>
-                  <Button
-                    className={
-                      sourceType === 'gogo' && language === 'sub'
-                        ? 'active'
-                        : ''
-                    }
-                    onClick={() => {
-                      setSourceType('gogo');
-                      setLanguage('sub');
-                    }}
-                  >
-                    Gogo
-                  </Button>
-                </ButtonWrapper>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <FaMicrophone /> Dub
-              </TableCell>
-              <TableCell>
-                <ButtonWrapper>
-                  <Button
-                    className={
-                      sourceType === 'default' && language === 'dub'
-                        ? 'active'
-                        : ''
-                    }
-                    onClick={() => {
-                      setSourceType('default');
-                      setLanguage('dub');
-                    }}
-                  >
-                    Default
-                  </Button>
-                </ButtonWrapper>
-              </TableCell>
-              <TableCell>
-                <ButtonWrapper>
-                  <Button
-                    className={
-                      sourceType === 'vidstreaming' && language === 'dub'
-                        ? 'active'
-                        : ''
-                    }
-                    onClick={() => {
-                      setSourceType('vidstreaming');
-                      setLanguage('dub');
-                    }}
-                  >
-                    Vidstream
-                  </Button>
-                </ButtonWrapper>
-              </TableCell>
-              <TableCell>
-                <ButtonWrapper>
-                  <Button
-                    className={
-                      sourceType === 'gogo' && language === 'dub'
-                        ? 'active'
-                        : ''
-                    }
-                    onClick={() => {
-                      setSourceType('gogo');
-                      setLanguage('dub');
-                    }}
-                  >
-                    Gogo
-                  </Button>
-                </ButtonWrapper>
-              </TableCell>
-            </TableRow>
-          </tbody>
-        </Table>
-      </ResponsiveTableContainer>
-    </UpdatedContainer>
-  );
+	return (
+		<UpdatedContainer>
+			<EpisodeInfoColumn>
+				{episodeId ? (
+					<>
+						You're watching <strong>Episode {episodeId}</strong>
+						<DownloadLink
+							href={downloadLink}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<FaDownload />
+						</DownloadLink>
+						<ShareButton onClick={handleShareClick}>
+							<FaShare />
+						</ShareButton>
+						{isCopied && <p>Copied to clipboard!</p>}
+						<br />
+						<br />
+						<p>If current servers don't work, please try other servers.</p>
+					</>
+				) : (
+					"Loading episode information..."
+				)}
+				{airingTime && (
+					<>
+						<p>
+							Episode <strong>{nextEpisodenumber}</strong> will air in{" "}
+							<FaBell />
+							<strong> {airingTime}</strong>.
+						</p>
+					</>
+				)}
+			</EpisodeInfoColumn>
+			<ResponsiveTableContainer>
+				<Table>
+					<tbody>
+						<TableRow>
+							<TableCell>
+								<FaClosedCaptioning /> Sub
+							</TableCell>
+							<TableCell>
+								<ButtonWrapper>
+									<Button
+										className={
+											sourceType === "default" && language === "sub"
+												? "active"
+												: ""
+										}
+										onClick={() => {
+											setSourceType("default");
+											setLanguage("sub");
+										}}
+									>
+										Default
+									</Button>
+								</ButtonWrapper>
+							</TableCell>
+							<TableCell>
+								<ButtonWrapper>
+									<Button
+										className={
+											sourceType === "vidstreaming" && language === "sub"
+												? "active"
+												: ""
+										}
+										onClick={() => {
+											setSourceType("vidstreaming");
+											setLanguage("sub");
+										}}
+									>
+										Vidstream
+									</Button>
+								</ButtonWrapper>
+							</TableCell>
+							<TableCell>
+								<ButtonWrapper>
+									<Button
+										className={
+											sourceType === "gogo" && language === "sub"
+												? "active"
+												: ""
+										}
+										onClick={() => {
+											setSourceType("gogo");
+											setLanguage("sub");
+										}}
+									>
+										Gogo
+									</Button>
+								</ButtonWrapper>
+							</TableCell>
+						</TableRow>
+						<TableRow>
+							<TableCell>
+								<FaMicrophone /> Dub
+							</TableCell>
+							<TableCell>
+								<ButtonWrapper>
+									<Button
+										className={
+											sourceType === "default" && language === "dub"
+												? "active"
+												: ""
+										}
+										onClick={() => {
+											setSourceType("default");
+											setLanguage("dub");
+										}}
+									>
+										Default
+									</Button>
+								</ButtonWrapper>
+							</TableCell>
+							<TableCell>
+								<ButtonWrapper>
+									<Button
+										className={
+											sourceType === "vidstreaming" && language === "dub"
+												? "active"
+												: ""
+										}
+										onClick={() => {
+											setSourceType("vidstreaming");
+											setLanguage("dub");
+										}}
+									>
+										Vidstream
+									</Button>
+								</ButtonWrapper>
+							</TableCell>
+							<TableCell>
+								<ButtonWrapper>
+									<Button
+										className={
+											sourceType === "gogo" && language === "dub"
+												? "active"
+												: ""
+										}
+										onClick={() => {
+											setSourceType("gogo");
+											setLanguage("dub");
+										}}
+									>
+										Gogo
+									</Button>
+								</ButtonWrapper>
+							</TableCell>
+						</TableRow>
+					</tbody>
+				</Table>
+			</ResponsiveTableContainer>
+		</UpdatedContainer>
+	);
 };

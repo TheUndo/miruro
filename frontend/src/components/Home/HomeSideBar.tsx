@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router for navigation
-import { TbCards } from 'react-icons/tb';
-import { FaStar, FaCalendarAlt } from 'react-icons/fa';
-import { Anime, StatusIndicator } from '../../index';
+import { useEffect, useState } from "react";
+import { FaCalendarAlt, FaStar } from "react-icons/fa";
+import { TbCards } from "react-icons/tb";
+import { Link } from "react-router-dom"; // Assuming you're using React Router for navigation
+import styled from "styled-components";
+import { type Anime, StatusIndicator } from "../../index";
 
 const SidebarStyled = styled.div`
   transition: 0.2s ease-in-out;
@@ -89,74 +89,74 @@ const Details = styled.p`
 `;
 
 export const HomeSideBar: React.FC<{ animeData: Anime[] }> = ({
-  animeData,
+	animeData,
 }) => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth);
+		};
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
-  const displayedAnime = windowWidth <= 500 ? animeData.slice(0, 5) : animeData;
+	const displayedAnime = windowWidth <= 500 ? animeData.slice(0, 5) : animeData;
 
-  return (
-    <SidebarStyled>
-      {displayedAnime.map((anime: Anime, index) => (
-        <Link
-          to={`/watch/${anime.id}`}
-          key={anime.id}
-          style={{ textDecoration: 'none', color: 'inherit' }}
-          title={`${anime.title.userPreferred}`}
-          aria-label={`Watch ${anime.title.userPreferred}`}
-        >
-          <AnimeCard
-            key={anime.id}
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <AnimeImageStyled
-              src={anime.image}
-              alt={anime.title.userPreferred}
-            />
-            <InfoStyled>
-              <TitleWithDot>
-                <StatusIndicator status={anime.status} />
-                <Title>{anime.title.english || anime.title.romaji}</Title>
-              </TitleWithDot>
-              <Details>
-                {anime.type && <>{anime.type}</>}
-                {anime.releaseDate && (
-                  <>
-                    <FaCalendarAlt /> {anime.releaseDate}
-                  </>
-                )}
-                {anime.currentEpisode !== null &&
-                  anime.currentEpisode !== undefined &&
-                  anime.totalEpisodes !== null &&
-                  anime.totalEpisodes !== undefined &&
-                  anime.totalEpisodes !== 0 &&
-                  anime.totalEpisodes !== 0 && (
-                    <>
-                      <TbCards /> {anime.currentEpisode}
-                      {' / '}
-                      {anime.totalEpisodes}
-                    </>
-                  )}
+	return (
+		<SidebarStyled>
+			{displayedAnime.map((anime: Anime, index) => (
+				<Link
+					to={`/watch/${anime.id}`}
+					key={anime.id}
+					style={{ textDecoration: "none", color: "inherit" }}
+					title={`${anime.title.userPreferred}`}
+					aria-label={`Watch ${anime.title.userPreferred}`}
+				>
+					<AnimeCard
+						key={anime.id}
+						style={{ animationDelay: `${index * 0.1}s` }}
+					>
+						<AnimeImageStyled
+							src={anime.image}
+							alt={anime.title.userPreferred}
+						/>
+						<InfoStyled>
+							<TitleWithDot>
+								<StatusIndicator status={anime.status} />
+								<Title>{anime.title.english || anime.title.romaji}</Title>
+							</TitleWithDot>
+							<Details>
+								{anime.type && <>{anime.type}</>}
+								{anime.releaseDate && (
+									<>
+										<FaCalendarAlt /> {anime.releaseDate}
+									</>
+								)}
+								{anime.currentEpisode !== null &&
+									anime.currentEpisode !== undefined &&
+									anime.totalEpisodes !== null &&
+									anime.totalEpisodes !== undefined &&
+									anime.totalEpisodes !== 0 &&
+									anime.totalEpisodes !== 0 && (
+										<>
+											<TbCards /> {anime.currentEpisode}
+											{" / "}
+											{anime.totalEpisodes}
+										</>
+									)}
 
-                {anime.rating && (
-                  <>
-                    <FaStar /> {anime.rating}
-                  </>
-                )}
-              </Details>
-            </InfoStyled>
-          </AnimeCard>
-        </Link>
-      ))}
-    </SidebarStyled>
-  );
+								{anime.rating && (
+									<>
+										<FaStar /> {anime.rating}
+									</>
+								)}
+							</Details>
+						</InfoStyled>
+					</AnimeCard>
+				</Link>
+			))}
+		</SidebarStyled>
+	);
 };

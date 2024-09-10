@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import Image404URL from '/src/assets/404.webp';
+import type React from "react";
+import { useEffect } from "react";
+import styled from "styled-components";
+import Image404URL from "/src/assets/404.webp";
 
 // Styled component for Centered Content
 const CenteredContent = styled.div`
@@ -30,24 +31,24 @@ const CenteredContent = styled.div`
 const Idkwhattonamethis = styled.div``;
 
 const NotFound: React.FC = () => {
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = '404 | Page Not Found';
-    return () => {
-      document.title = previousTitle;
-    };
-  }, []);
+	useEffect(() => {
+		const previousTitle = document.title;
+		document.title = "404 | Page Not Found";
+		return () => {
+			document.title = previousTitle;
+		};
+	}, []);
 
-  return (
-    <CenteredContent>
-      <Idkwhattonamethis>
-        <p>
-          <strong>404</strong> | Page Not Found
-        </p>
-        <img src={Image404URL} alt='404 Error' />
-      </Idkwhattonamethis>
-    </CenteredContent>
-  );
+	return (
+		<CenteredContent>
+			<Idkwhattonamethis>
+				<p>
+					<strong>404</strong> | Page Not Found
+				</p>
+				<img src={Image404URL} alt="404 Error" />
+			</Idkwhattonamethis>
+		</CenteredContent>
+	);
 };
 
 export default NotFound;

@@ -1,27 +1,28 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { FaPlay } from 'react-icons/fa';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css';
-import { Episode } from '../../index';
-import { IoIosCloseCircleOutline } from 'react-icons/io';
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
+import { FaPlay } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import type { Episode } from "../../index";
 
 const LOCAL_STORAGE_KEYS = {
-  WATCHED_EPISODES: 'watched-episodes',
-  LAST_ANIME_VISITED: 'last-anime-visited',
+	WATCHED_EPISODES: "watched-episodes",
+	LAST_ANIME_VISITED: "last-anime-visited",
 };
 
 interface LastEpisodes {
-  [key: string]: Episode;
+	[key: string]: Episode;
 }
 
 interface LastVisitedData {
-  [key: string]: {
-    timestamp?: number;
-    titleEnglish?: string;
-    titleRomaji?: string;
-  };
+	[key: string]: {
+		timestamp?: number;
+		titleEnglish?: string;
+		titleRomaji?: string;
+	};
 }
 
 const StyledSwiperContainer = styled(Swiper)`
@@ -170,149 +171,149 @@ const FaCircle = styled(IoIosCloseCircleOutline)`
 `;
 
 const calculateSlidesPerView = (windowWidth: number): number => {
-  if (windowWidth >= 1200) return 5;
-  if (windowWidth >= 1000) return 4;
-  if (windowWidth >= 700) return 3;
-  if (windowWidth >= 500) return 2;
-  return 2;
+	if (windowWidth >= 1200) return 5;
+	if (windowWidth >= 1000) return 4;
+	if (windowWidth >= 700) return 3;
+	if (windowWidth >= 500) return 2;
+	return 2;
 };
 
 export const EpisodeCard: React.FC = () => {
-  const [watchedEpisodesData, setWatchedEpisodesData] = useState(
-    localStorage.getItem('watched-episodes'),
-  );
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+	const [watchedEpisodesData, setWatchedEpisodesData] = useState(
+		localStorage.getItem("watched-episodes"),
+	);
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const lastVisitedData = useMemo<LastVisitedData>(() => {
-    const data = localStorage.getItem(LOCAL_STORAGE_KEYS.LAST_ANIME_VISITED);
-    return data ? JSON.parse(data) : {};
-  }, []);
+	const lastVisitedData = useMemo<LastVisitedData>(() => {
+		const data = localStorage.getItem(LOCAL_STORAGE_KEYS.LAST_ANIME_VISITED);
+		return data ? JSON.parse(data) : {};
+	}, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    const debouncedResize = setTimeout(handleResize, 200);
-    window.addEventListener('resize', handleResize);
-    return () => {
-      clearTimeout(debouncedResize);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth);
+		};
+		const debouncedResize = setTimeout(handleResize, 200);
+		window.addEventListener("resize", handleResize);
+		return () => {
+			clearTimeout(debouncedResize);
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
-  const episodesToRender = useMemo(() => {
-    if (!watchedEpisodesData) return [];
-    try {
-      const allEpisodes: Record<string, Episode[]> =
-        JSON.parse(watchedEpisodesData);
+	const episodesToRender = useMemo(() => {
+		if (!watchedEpisodesData) return [];
+		try {
+			const allEpisodes: Record<string, Episode[]> =
+				JSON.parse(watchedEpisodesData);
 
-      const lastEpisodes = Object.entries(allEpisodes).reduce<LastEpisodes>(
-        (acc, [animeId, episodes]) => {
-          const lastEpisode = episodes[episodes.length - 1]; // Assuming the episodes are in order
-          if (lastEpisode) {
-            acc[animeId] = lastEpisode;
-          }
-          return acc;
-        },
-        {},
-      );
+			const lastEpisodes = Object.entries(allEpisodes).reduce<LastEpisodes>(
+				(acc, [animeId, episodes]) => {
+					const lastEpisode = episodes[episodes.length - 1]; // Assuming the episodes are in order
+					if (lastEpisode) {
+						acc[animeId] = lastEpisode;
+					}
+					return acc;
+				},
+				{},
+			);
 
-      const orderedAnimeIds = Object.keys(lastEpisodes).sort((a, b) => {
-        const lastVisitedA = lastVisitedData[a]?.timestamp || 0;
-        const lastVisitedB = lastVisitedData[b]?.timestamp || 0;
-        return lastVisitedB - lastVisitedA;
-      });
+			const orderedAnimeIds = Object.keys(lastEpisodes).sort((a, b) => {
+				const lastVisitedA = lastVisitedData[a]?.timestamp || 0;
+				const lastVisitedB = lastVisitedData[b]?.timestamp || 0;
+				return lastVisitedB - lastVisitedA;
+			});
 
-      return orderedAnimeIds.map((animeId) => {
-        const episode = lastEpisodes[animeId];
-        const playbackInfo = JSON.parse(
-          localStorage.getItem('all_episode_times') || '{}',
-        ) as { [key: string]: { playbackPercentage: number } };
+			return orderedAnimeIds.map((animeId) => {
+				const episode = lastEpisodes[animeId];
+				const playbackInfo = JSON.parse(
+					localStorage.getItem("all_episode_times") || "{}",
+				) as { [key: string]: { playbackPercentage: number } };
 
-        const playbackPercentage =
-          playbackInfo[episode.id]?.playbackPercentage || 0;
+				const playbackPercentage =
+					playbackInfo[episode.id]?.playbackPercentage || 0;
 
-        // Determine anime title, preferring English, falling back to Romaji, then to "Episode Title"
-        const animeTitle =
-          lastVisitedData[animeId]?.titleEnglish ||
-          lastVisitedData[animeId]?.titleRomaji ||
-          '';
+				// Determine anime title, preferring English, falling back to Romaji, then to "Episode Title"
+				const animeTitle =
+					lastVisitedData[animeId]?.titleEnglish ||
+					lastVisitedData[animeId]?.titleRomaji ||
+					"";
 
-        // Conditional title display
-        const displayTitle = `${animeTitle}${episode.title ? ` - ${episode.title}` : ''}`;
+				// Conditional title display
+				const displayTitle = `${animeTitle}${episode.title ? ` - ${episode.title}` : ""}`;
 
-        const handleRemoveAllEpisodes = (animeId: string) => {
-          const updatedEpisodes = JSON.parse(watchedEpisodesData || '{}');
-          delete updatedEpisodes[animeId];
+				const handleRemoveAllEpisodes = (animeId: string) => {
+					const updatedEpisodes = JSON.parse(watchedEpisodesData || "{}");
+					delete updatedEpisodes[animeId];
 
-          const newWatchedEpisodesData = JSON.stringify(updatedEpisodes);
-          localStorage.setItem('watched-episodes', newWatchedEpisodesData);
-          setWatchedEpisodesData(newWatchedEpisodesData); // Trigger re-render
-        };
+					const newWatchedEpisodesData = JSON.stringify(updatedEpisodes);
+					localStorage.setItem("watched-episodes", newWatchedEpisodesData);
+					setWatchedEpisodesData(newWatchedEpisodesData); // Trigger re-render
+				};
 
-        return (
-          <StyledSwiperSlide key={episode.id}>
-            <AnimeEpisodeCard
-              to={`/watch/${animeId}`}
-              style={{ textDecoration: 'none' }}
-              title={`Continue Watching ${displayTitle}`}
-            >
-              <img src={episode.image} alt={`Cover for ${animeTitle}`} />
-              <PlayIcon aria-label='Play Episode'>
-                <FaPlay />
-              </PlayIcon>
-              <div className='episode-info'>
-                <p className='episode-title'>{displayTitle}</p>
-                <p className='episode-number'>{`Episode ${episode.number}`}</p>
-              </div>
-              <ProgressBar
-                style={{ width: `${Math.max(playbackPercentage, 5)}%` }}
-              />
-              <CloseButton
-                onClick={(e) => {
-                  e.preventDefault(); // Prevents the default action of the event
-                  e.stopPropagation(); // Prevents the event from bubbling up to any parent elements
-                  handleRemoveAllEpisodes(animeId);
-                }}
-              >
-                <FaCircle aria-label='Close' />
-              </CloseButton>
-            </AnimeEpisodeCard>
-          </StyledSwiperSlide>
-        );
-      });
-    } catch (error) {
-      console.error('Failed to parse watched episodes data:', error);
-      return [];
-    }
-  }, [watchedEpisodesData, lastVisitedData]);
+				return (
+					<StyledSwiperSlide key={episode.id}>
+						<AnimeEpisodeCard
+							to={`/watch/${animeId}`}
+							style={{ textDecoration: "none" }}
+							title={`Continue Watching ${displayTitle}`}
+						>
+							<img src={episode.image} alt={`Cover for ${animeTitle}`} />
+							<PlayIcon aria-label="Play Episode">
+								<FaPlay />
+							</PlayIcon>
+							<div className="episode-info">
+								<p className="episode-title">{displayTitle}</p>
+								<p className="episode-number">{`Episode ${episode.number}`}</p>
+							</div>
+							<ProgressBar
+								style={{ width: `${Math.max(playbackPercentage, 5)}%` }}
+							/>
+							<CloseButton
+								onClick={(e) => {
+									e.preventDefault(); // Prevents the default action of the event
+									e.stopPropagation(); // Prevents the event from bubbling up to any parent elements
+									handleRemoveAllEpisodes(animeId);
+								}}
+							>
+								<FaCircle aria-label="Close" />
+							</CloseButton>
+						</AnimeEpisodeCard>
+					</StyledSwiperSlide>
+				);
+			});
+		} catch (error) {
+			console.error("Failed to parse watched episodes data:", error);
+			return [];
+		}
+	}, [watchedEpisodesData, lastVisitedData]);
 
-  const swiperSettings = useMemo(
-    () => ({
-      spaceBetween: 20,
-      slidesPerView: calculateSlidesPerView(windowWidth),
-      loop: true,
-      freeMode: true,
-      grabCursor: true,
-      keyboard: true,
-      autoplay: {
-        delay: 6000,
-        disableOnInteraction: false,
-      },
-    }),
-    [windowWidth],
-  );
+	const swiperSettings = useMemo(
+		() => ({
+			spaceBetween: 20,
+			slidesPerView: calculateSlidesPerView(windowWidth),
+			loop: true,
+			freeMode: true,
+			grabCursor: true,
+			keyboard: true,
+			autoplay: {
+				delay: 6000,
+				disableOnInteraction: false,
+			},
+		}),
+		[windowWidth],
+	);
 
-  return (
-    <Section aria-labelledby='continueWatchingTitle'>
-      {episodesToRender.length > 0 && (
-        <ContinueWatchingTitle id='continueWatchingTitle'>
-          CONTINUE WATCHING
-        </ContinueWatchingTitle>
-      )}
-      <StyledSwiperContainer {...swiperSettings} aria-label='Episodes carousel'>
-        {episodesToRender}
-      </StyledSwiperContainer>
-    </Section>
-  );
+	return (
+		<Section aria-labelledby="continueWatchingTitle">
+			{episodesToRender.length > 0 && (
+				<ContinueWatchingTitle id="continueWatchingTitle">
+					CONTINUE WATCHING
+				</ContinueWatchingTitle>
+			)}
+			<StyledSwiperContainer {...swiperSettings} aria-label="Episodes carousel">
+				{episodesToRender}
+			</StyledSwiperContainer>
+		</Section>
+	);
 };

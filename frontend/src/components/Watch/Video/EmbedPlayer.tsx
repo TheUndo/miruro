@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import type React from "react";
+import styled from "styled-components";
 
 const Container = styled.div``;
 
@@ -10,9 +10,9 @@ const Iframe = styled.iframe`
 `;
 
 export const EmbedPlayer: React.FC<{ src: string }> = ({ src }) => {
-  return (
-    <Container>
-      <Iframe src={src} allowFullScreen />
-    </Container>
-  );
+	return (
+		<Container>
+			<Iframe src={src} allowFullScreen />
+		</Container>
+	);
 };

@@ -1,5 +1,6 @@
-import styled from 'styled-components';
-import React, { useMemo } from 'react';
+import type React from "react";
+import { useMemo } from "react";
+import styled from "styled-components";
 
 const IndicatorDot = styled.div`
   width: 0.5rem;
@@ -30,20 +31,20 @@ const DefaultIndicator = styled(IndicatorDot)`
 `;
 
 export const StatusIndicator: React.FC<{ status: string }> = ({ status }) => {
-  const handleStatusCheck = useMemo(() => {
-    switch (status) {
-      case 'Ongoing':
-        return <OngoingIndicator />;
-      case 'Completed':
-        return <CompletedIndicator />;
-      case 'Cancelled':
-        return <CancelledIndicator />;
-      case 'Not yet aired':
-        return <NotYetAiredIndicator />;
-      default:
-        return <DefaultIndicator />;
-    }
-  }, [status]); // Ensure all dependencies are correctly listed
+	const handleStatusCheck = useMemo(() => {
+		switch (status) {
+			case "Ongoing":
+				return <OngoingIndicator />;
+			case "Completed":
+				return <CompletedIndicator />;
+			case "Cancelled":
+				return <CancelledIndicator />;
+			case "Not yet aired":
+				return <NotYetAiredIndicator />;
+			default:
+				return <DefaultIndicator />;
+		}
+	}, [status]); // Ensure all dependencies are correctly listed
 
-  return <>{handleStatusCheck}</>;
+	return <>{handleStatusCheck}</>;
 };

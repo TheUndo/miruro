@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { SkeletonCard, StatusIndicator, type Anime } from '../../index'; // Adjust the import path to correctly point to your index.ts location
-import { FaPlay } from 'react-icons/fa'; // For the play icon
-import { TbCards } from 'react-icons/tb';
-import { FaStar, FaCalendarAlt } from 'react-icons/fa';
+import React, { useEffect, useState, useMemo } from "react";
+import { FaPlay } from "react-icons/fa"; // For the play icon
+import { FaCalendarAlt, FaStar } from "react-icons/fa";
+import { TbCards } from "react-icons/tb";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { type Anime, SkeletonCard, StatusIndicator } from "../../index"; // Adjust the import path to correctly point to your index.ts location
 
 const StyledCardWrapper = styled(Link)`
   color: var(--global-text);
@@ -110,7 +110,7 @@ const Title = styled.h5<{ $isHovered: boolean; color?: string }>`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: ${(props) => (props.$isHovered ? props.color : 'var(--title-color)')};
+  color: ${(props) => (props.$isHovered ? props.color : "var(--title-color)")};
   transition: 0.2s ease-in-out;
 
   @media (max-width: 500px) {
@@ -156,122 +156,120 @@ const CardDetails = styled.div`
 `;
 
 export const CardItem: React.FC<{ anime: Anime }> = ({ anime }) => {
-  const [loading, setLoading] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
+	const [loading, setLoading] = useState(true);
+	const [isHovered, setIsHovered] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 0);
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setLoading(false);
+		}, 0);
 
-    return () => clearTimeout(timer);
-  }, [anime.id]);
+		return () => clearTimeout(timer);
+	}, [anime.id]);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+	const handleMouseEnter = () => {
+		setIsHovered(true);
+	};
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+	const handleMouseLeave = () => {
+		setIsHovered(false);
+	};
 
-  const imageSrc = anime.image || '';
-  const animeColor = anime.color || '#999999';
-  const displayTitle = useMemo(
-    () => anime.title.english || anime.title.romaji || 'No Title',
-    [anime.title.english, anime.title.romaji],
-  );
+	const imageSrc = anime.image || "";
+	const animeColor = anime.color || "#999999";
+	const displayTitle = useMemo(
+		() => anime.title.english || anime.title.romaji || "No Title",
+		[anime.title.english, anime.title.romaji],
+	);
 
-  const truncateTitle = useMemo(
-    () => (title: string, maxLength: number) =>
-      title.length > maxLength ? `${title.slice(0, maxLength)}...` : title,
-    [],
-  );
+	const truncateTitle = useMemo(
+		() => (title: string, maxLength: number) =>
+			title.length > maxLength ? `${title.slice(0, maxLength)}...` : title,
+		[],
+	);
 
-  const handleImageLoad = () => {
-    setLoading(false); // Set loading to false when image is loaded
-  };
+	const handleImageLoad = () => {
+		setLoading(false); // Set loading to false when image is loaded
+	};
 
-  const displayDetail = useMemo(() => {
-    // Any complex logic can go here
-    return (
-      <ImgDetail $isHovered={isHovered} color={anime.color}>
-        {anime.type}
-      </ImgDetail>
-    );
-  }, [isHovered, anime.color, anime.type]);
+	const displayDetail = useMemo(() => {
+		// Any complex logic can go here
+		return (
+			<ImgDetail $isHovered={isHovered} color={anime.color}>
+				{anime.type}
+			</ImgDetail>
+		);
+	}, [isHovered, anime.color, anime.type]);
 
-  return (
-    <>
-      {loading ? (
-        <SkeletonCard />
-      ) : (
-        <StyledCardWrapper
-          to={`/watch/${anime.id}`}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          color={animeColor}
-          title={anime.title.english || anime.title.romaji}
-        >
-          <StyledCardItem>
-            <ImageDisplayWrapper>
-              <AnimeImage>
-                <ImageWrapper>
-                  <img
-                    src={imageSrc}
-                    onLoad={handleImageLoad}
-                    loading='eager'
-                    alt={
-                      anime.title.english || anime.title.romaji + ' Cover Image'
-                    }
-                  />
-                  <PlayIcon
-                    title={
-                      'Play ' + (anime.title.english || anime.title.romaji)
-                    }
-                  />
-                </ImageWrapper>
-                {isHovered && displayDetail}
-              </AnimeImage>
-            </ImageDisplayWrapper>
-            <TitleContainer $isHovered={isHovered}>
-              <StatusIndicator status={anime.status} />
-              <Title
-                $isHovered={isHovered}
-                color={anime.color}
-                title={'Title: ' + (anime.title.english || anime.title.romaji)}
-              >
-                {truncateTitle(displayTitle, 35)}
-              </Title>
-            </TitleContainer>
-            <div>
-              <CardDetails title='Romaji Title'>
-                {truncateTitle(anime.title.romaji || '', 24)}
-              </CardDetails>
-              <CardDetails title='Card Details'>
-                {anime.releaseDate && (
-                  <>
-                    <FaCalendarAlt />
-                    {anime.releaseDate}
-                  </>
-                )}
-                {(anime.totalEpisodes || anime.episodes) && (
-                  <>
-                    <TbCards />
-                    {anime.totalEpisodes || anime.episodes}
-                  </>
-                )}
-                {anime.rating && (
-                  <>
-                    <FaStar />
-                    {anime.rating}
-                  </>
-                )}
-              </CardDetails>
-            </div>
-          </StyledCardItem>
-        </StyledCardWrapper>
-      )}
-    </>
-  );
+	return (
+		<>
+			{loading ? (
+				<SkeletonCard />
+			) : (
+				<StyledCardWrapper
+					to={`/watch/${anime.id}`}
+					onMouseEnter={handleMouseEnter}
+					onMouseLeave={handleMouseLeave}
+					color={animeColor}
+					title={anime.title.english || anime.title.romaji}
+				>
+					<StyledCardItem>
+						<ImageDisplayWrapper>
+							<AnimeImage>
+								<ImageWrapper>
+									<img
+										src={imageSrc}
+										onLoad={handleImageLoad}
+										loading="eager"
+										alt={
+											anime.title.english || `${anime.title.romaji} Cover Image`
+										}
+									/>
+									<PlayIcon
+										title={`Play ${anime.title.english || anime.title.romaji}`}
+									/>
+								</ImageWrapper>
+								{isHovered && displayDetail}
+							</AnimeImage>
+						</ImageDisplayWrapper>
+						<TitleContainer $isHovered={isHovered}>
+							<StatusIndicator status={anime.status} />
+							<Title
+								$isHovered={isHovered}
+								color={anime.color}
+								title={`Title: ${anime.title.english || anime.title.romaji}`}
+							>
+								{truncateTitle(displayTitle, 35)}
+							</Title>
+						</TitleContainer>
+						<div>
+							<CardDetails title="Romaji Title">
+								{truncateTitle(anime.title.romaji || "", 24)}
+							</CardDetails>
+							<CardDetails title="Card Details">
+								{anime.releaseDate && (
+									<>
+										<FaCalendarAlt />
+										{anime.releaseDate}
+									</>
+								)}
+								{(anime.totalEpisodes || anime.episodes) && (
+									<>
+										<TbCards />
+										{anime.totalEpisodes || anime.episodes}
+									</>
+								)}
+								{anime.rating && (
+									<>
+										<FaStar />
+										{anime.rating}
+									</>
+								)}
+							</CardDetails>
+						</div>
+					</StyledCardItem>
+				</StyledCardWrapper>
+			)}
+		</>
+	);
 };

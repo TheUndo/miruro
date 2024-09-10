@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Seasons, Anime } from '../../index';
-import { SiMyanimelist, SiAnilist } from 'react-icons/si';
+import type React from "react";
+import { useEffect, useState } from "react";
+import { SiAnilist, SiMyanimelist } from "react-icons/si";
+import styled from "styled-components";
+import { type Anime, Seasons } from "../../index";
 
 const AnimeDataContainer = styled.div`
   margin-bottom: 1.5rem;
@@ -262,228 +263,228 @@ const TrailerOverlayContent = styled.div`
 `;
 
 export const WatchAnimeData: React.FC<{ animeData: Anime }> = ({
-  animeData,
+	animeData,
 }) => {
-  const [isDescriptionExpanded, setDescriptionExpanded] = useState(false);
-  const [showTrailer, setShowTrailer] = useState(false);
+	const [isDescriptionExpanded, setDescriptionExpanded] = useState(false);
+	const [showTrailer, setShowTrailer] = useState(false);
 
-  const getAnimeIdFromUrl = () => {
-    const pathParts = window.location.pathname.split('/');
-    return pathParts[2];
-  };
+	const getAnimeIdFromUrl = () => {
+		const pathParts = window.location.pathname.split("/");
+		return pathParts[2];
+	};
 
-  const toggleDescription = () => {
-    setDescriptionExpanded(!isDescriptionExpanded);
-  };
+	const toggleDescription = () => {
+		setDescriptionExpanded(!isDescriptionExpanded);
+	};
 
-  useEffect(() => {
-    setDescriptionExpanded(false);
-  }, [getAnimeIdFromUrl()]);
+	useEffect(() => {
+		setDescriptionExpanded(false);
+	}, [getAnimeIdFromUrl()]);
 
-  const removeHTMLTags = (description: string): string => {
-    return description.replace(/<[^>]+>/g, '').replace(/\([^)]*\)/g, '');
-  };
+	const removeHTMLTags = (description: string): string => {
+		return description.replace(/<[^>]+>/g, "").replace(/\([^)]*\)/g, "");
+	};
 
-  const toggleTrailer = () => {
-    setShowTrailer(!showTrailer);
-  };
+	const toggleTrailer = () => {
+		setShowTrailer(!showTrailer);
+	};
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && showTrailer) {
-        setShowTrailer(false);
-      }
-    };
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape" && showTrailer) {
+				setShowTrailer(false);
+			}
+		};
 
-    document.addEventListener('keydown', handleKeyDown);
+		document.addEventListener("keydown", handleKeyDown);
 
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [showTrailer]);
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [showTrailer]);
 
-  function capitalizeFirstLetter(str: string) {
-    if (!str) return str;
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  }
+	function capitalizeFirstLetter(str: string) {
+		if (!str) return str;
+		return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+	}
 
-  const isScreenUnder500px = () => window.innerWidth < 500;
+	const isScreenUnder500px = () => window.innerWidth < 500;
 
-  return (
-    <>
-      {animeData && (
-        <AnimeDataContainer>
-          <AnimeDataContainerTop>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <AnimeInfoImage src={animeData.image} alt='Anime Title Image' />
-              {animeData.trailer && animeData.status !== 'Not yet aired' && (
-                <ShowTrailerButton onClick={toggleTrailer}>
-                  <p>
-                    <strong>TRAILER</strong>
-                  </p>
-                </ShowTrailerButton>
-              )}
-              {showTrailer && (
-                <TrailerOverlay onClick={toggleTrailer}>
-                  <TrailerOverlayContent onClick={(e) => e.stopPropagation()}>
-                    <IframeTrailer
-                      src={`https://www.youtube.com/embed/${animeData.trailer.id}`}
-                      allowFullScreen
-                    />
-                  </TrailerOverlayContent>
-                </TrailerOverlay>
-              )}
-              <MalAniContainer>
-                {animeData.id && (
-                  <a
-                    href={`https://anilist.co/${!animeData.type ? 'anime' : animeData.type.toLowerCase() === 'manga' || animeData.type.toLowerCase() === 'novel' ? 'manga' : 'anime'}/${animeData.id}`}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <MalAnilistSvg>
-                      <SiAnilist size={'1.5rem'} />
-                    </MalAnilistSvg>
-                  </a>
-                )}
-                {animeData.malId && (
-                  <a
-                    href={`https://myanimelist.net/${!animeData.type ? 'anime' : animeData.type.toLowerCase() === 'manga' || animeData.type.toLowerCase() === 'novel' ? 'manga' : 'anime'}/${animeData.malId}`}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <MalAnilistSvg>
-                      <SiMyanimelist size={'2.75rem'} />
-                    </MalAnilistSvg>
-                  </a>
-                )}
-              </MalAniContainer>
-            </div>
-            <AnimeDataText>
-              <>
-                <p className='anime-title'>
-                  {animeData.title.english
-                    ? animeData.title.english
-                    : animeData.title.romaji}
-                </p>
-                <p
-                  className='anime-title-romaji'
-                  style={{ color: animeData.color }}
-                >
-                  {animeData.title.romaji
-                    ? animeData.title.romaji
-                    : animeData.title.native}
-                </p>
-              </>
-              {!isScreenUnder500px() && animeData.description && (
-                <AnimeDataText>
-                  <p className='Description'>
-                    <ShowMoreButton onClick={toggleDescription}>
-                      {isDescriptionExpanded
-                        ? removeHTMLTags(animeData.description)
-                        : `${removeHTMLTags(animeData.description).substring(0, 100)}...`}
-                      {isDescriptionExpanded ? '[Show Less]' : '[Show More]'}
-                    </ShowMoreButton>
-                  </p>
-                </AnimeDataText>
-              )}
-              <ParentContainer>
-                <AnimeDataContainerMiddle>
-                  <AnimeDataText>
-                    {animeData.type ? (
-                      <p>
-                        Type: <strong>{animeData.type}</strong>
-                      </p>
-                    ) : (
-                      <p>
-                        Type: <strong>Unknown</strong>
-                      </p>
-                    )}
-                    {animeData.releaseDate ? (
-                      <p>
-                        Year: <strong>{animeData.releaseDate}</strong>
-                      </p>
-                    ) : (
-                      <p>
-                        Year: <strong>Unknown</strong>
-                      </p>
-                    )}
-                    {animeData.status && (
-                      <p>
-                        Status:{' '}
-                        <strong>
-                          {animeData.status === 'Completed'
-                            ? 'Finished'
-                            : animeData.status === 'Ongoing'
-                              ? 'Airing'
-                              : animeData.status}
-                        </strong>
-                      </p>
-                    )}
-                    {animeData.rating ? (
-                      <p>
-                        Rating: <strong>{animeData.rating}</strong>
-                      </p>
-                    ) : (
-                      <p>
-                        Rating: <strong>Unknown</strong>
-                      </p>
-                    )}
-                    {animeData.studios && animeData.studios.length > 0 ? (
-                      <p>
-                        Studios: <strong>{animeData.studios}</strong>
-                      </p>
-                    ) : (
-                      <p>
-                        Studios: <strong>Unknown</strong>
-                      </p>
-                    )}
-                  </AnimeDataText>
-                </AnimeDataContainerMiddle>
-                <AnimeDataContainerBottom>
-                  <AnimeDataText>
-                    {animeData.totalEpisodes !== null ? (
-                      <p>
-                        Episodes: <strong>{animeData.totalEpisodes}</strong>
-                      </p>
-                    ) : (
-                      <p>
-                        Episodes: <strong>Unknown</strong>
-                      </p>
-                    )}
-                    {animeData.duration ? (
-                      <p>
-                        Duration: <strong>{animeData.duration} min</strong>
-                      </p>
-                    ) : (
-                      <p>
-                        Duration: <strong>Unknown</strong>
-                      </p>
-                    )}
-                    {animeData.season ? (
-                      <p>
-                        Season:{' '}
-                        <strong>
-                          {capitalizeFirstLetter(animeData.season)}
-                        </strong>
-                      </p>
-                    ) : (
-                      <p>
-                        Season: <strong>Unknown</strong>
-                      </p>
-                    )}
-                    {animeData.countryOfOrigin && (
-                      <p>
-                        Country: <strong>{animeData.countryOfOrigin}</strong>
-                      </p>
-                    )}
-                    {/* timeUntilAiring */}
-                    {/* {animeData.nextAiringEpisode && (
+	return (
+		<>
+			{animeData && (
+				<AnimeDataContainer>
+					<AnimeDataContainerTop>
+						<div
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								alignItems: "center",
+							}}
+						>
+							<AnimeInfoImage src={animeData.image} alt="Anime Title Image" />
+							{animeData.trailer && animeData.status !== "Not yet aired" && (
+								<ShowTrailerButton onClick={toggleTrailer}>
+									<p>
+										<strong>TRAILER</strong>
+									</p>
+								</ShowTrailerButton>
+							)}
+							{showTrailer && (
+								<TrailerOverlay onClick={toggleTrailer}>
+									<TrailerOverlayContent onClick={(e) => e.stopPropagation()}>
+										<IframeTrailer
+											src={`https://www.youtube.com/embed/${animeData.trailer.id}`}
+											allowFullScreen
+										/>
+									</TrailerOverlayContent>
+								</TrailerOverlay>
+							)}
+							<MalAniContainer>
+								{animeData.id && (
+									<a
+										href={`https://anilist.co/${!animeData.type ? "anime" : animeData.type.toLowerCase() === "manga" || animeData.type.toLowerCase() === "novel" ? "manga" : "anime"}/${animeData.id}`}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<MalAnilistSvg>
+											<SiAnilist size={"1.5rem"} />
+										</MalAnilistSvg>
+									</a>
+								)}
+								{animeData.malId && (
+									<a
+										href={`https://myanimelist.net/${!animeData.type ? "anime" : animeData.type.toLowerCase() === "manga" || animeData.type.toLowerCase() === "novel" ? "manga" : "anime"}/${animeData.malId}`}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<MalAnilistSvg>
+											<SiMyanimelist size={"2.75rem"} />
+										</MalAnilistSvg>
+									</a>
+								)}
+							</MalAniContainer>
+						</div>
+						<AnimeDataText>
+							<>
+								<p className="anime-title">
+									{animeData.title.english
+										? animeData.title.english
+										: animeData.title.romaji}
+								</p>
+								<p
+									className="anime-title-romaji"
+									style={{ color: animeData.color }}
+								>
+									{animeData.title.romaji
+										? animeData.title.romaji
+										: animeData.title.native}
+								</p>
+							</>
+							{!isScreenUnder500px() && animeData.description && (
+								<AnimeDataText>
+									<p className="Description">
+										<ShowMoreButton onClick={toggleDescription}>
+											{isDescriptionExpanded
+												? removeHTMLTags(animeData.description)
+												: `${removeHTMLTags(animeData.description).substring(0, 100)}...`}
+											{isDescriptionExpanded ? "[Show Less]" : "[Show More]"}
+										</ShowMoreButton>
+									</p>
+								</AnimeDataText>
+							)}
+							<ParentContainer>
+								<AnimeDataContainerMiddle>
+									<AnimeDataText>
+										{animeData.type ? (
+											<p>
+												Type: <strong>{animeData.type}</strong>
+											</p>
+										) : (
+											<p>
+												Type: <strong>Unknown</strong>
+											</p>
+										)}
+										{animeData.releaseDate ? (
+											<p>
+												Year: <strong>{animeData.releaseDate}</strong>
+											</p>
+										) : (
+											<p>
+												Year: <strong>Unknown</strong>
+											</p>
+										)}
+										{animeData.status && (
+											<p>
+												Status:{" "}
+												<strong>
+													{animeData.status === "Completed"
+														? "Finished"
+														: animeData.status === "Ongoing"
+															? "Airing"
+															: animeData.status}
+												</strong>
+											</p>
+										)}
+										{animeData.rating ? (
+											<p>
+												Rating: <strong>{animeData.rating}</strong>
+											</p>
+										) : (
+											<p>
+												Rating: <strong>Unknown</strong>
+											</p>
+										)}
+										{animeData.studios && animeData.studios.length > 0 ? (
+											<p>
+												Studios: <strong>{animeData.studios}</strong>
+											</p>
+										) : (
+											<p>
+												Studios: <strong>Unknown</strong>
+											</p>
+										)}
+									</AnimeDataText>
+								</AnimeDataContainerMiddle>
+								<AnimeDataContainerBottom>
+									<AnimeDataText>
+										{animeData.totalEpisodes !== null ? (
+											<p>
+												Episodes: <strong>{animeData.totalEpisodes}</strong>
+											</p>
+										) : (
+											<p>
+												Episodes: <strong>Unknown</strong>
+											</p>
+										)}
+										{animeData.duration ? (
+											<p>
+												Duration: <strong>{animeData.duration} min</strong>
+											</p>
+										) : (
+											<p>
+												Duration: <strong>Unknown</strong>
+											</p>
+										)}
+										{animeData.season ? (
+											<p>
+												Season:{" "}
+												<strong>
+													{capitalizeFirstLetter(animeData.season)}
+												</strong>
+											</p>
+										) : (
+											<p>
+												Season: <strong>Unknown</strong>
+											</p>
+										)}
+										{animeData.countryOfOrigin && (
+											<p>
+												Country: <strong>{animeData.countryOfOrigin}</strong>
+											</p>
+										)}
+										{/* timeUntilAiring */}
+										{/* {animeData.nextAiringEpisode && (
                       <p>
                         AiringTime:{" "}
                         <strong>
@@ -491,7 +492,7 @@ export const WatchAnimeData: React.FC<{ animeData: Anime }> = ({
                         </strong>
                       </p>
                     )} */}
-                    {/* {animeData.startDate && (
+										{/* {animeData.startDate && (
                       <p>
                         Date aired:
                         <strong>
@@ -510,54 +511,53 @@ export const WatchAnimeData: React.FC<{ animeData: Anime }> = ({
                         </strong>
                       </p>
                     )} */}
-                    {animeData.genres && animeData.genres.length > 0 ? (
-                      <p>
-                        Genres: <strong>{animeData.genres.join(', ')}</strong>
-                      </p>
-                    ) : (
-                      <p>
-                        Genres: <strong>Unknown</strong>
-                      </p>
-                    )}
-                  </AnimeDataText>
-                </AnimeDataContainerBottom>
-              </ParentContainer>
-            </AnimeDataText>
-          </AnimeDataContainerTop>
-          {isScreenUnder500px() && animeData.description && (
-            <AnimeDataText>
-              <p className='Description'>
-                <strong>Description: </strong>
-                <ShowMoreButton onClick={toggleDescription}>
-                  {isDescriptionExpanded
-                    ? removeHTMLTags(animeData.description)
-                    : `${removeHTMLTags(animeData.description).substring(0, 150)}...`}
-                  {isDescriptionExpanded ? '[Show Less]' : '[Show More]'}
-                </ShowMoreButton>
-              </p>
-            </AnimeDataText>
-          )}
-        </AnimeDataContainer>
-      )}
-      {animeData.relations &&
-        animeData.relations.some(
-          (relation: any) =>
-            relation.relationType.toUpperCase() === 'PREQUEL' ||
-            relation.relationType.toUpperCase() === 'SEQUEL',
-        ) && (
-          <>
-            <AnimeDataText>
-              <p className='Seasons-Sections-Titles'>SEASONS</p>
-              <Seasons
-                relations={animeData.relations.filter(
-                  (relation: any) =>
-                    relation.relationType.toUpperCase() === 'PREQUEL' ||
-                    relation.relationType.toUpperCase() === 'SEQUEL',
-                )}
-              />
-            </AnimeDataText>
-          </>
-        )}
-    </>
-  );
+										{animeData.genres && animeData.genres.length > 0 ? (
+											<p>
+												Genres: <strong>{animeData.genres.join(", ")}</strong>
+											</p>
+										) : (
+											<p>
+												Genres: <strong>Unknown</strong>
+											</p>
+										)}
+									</AnimeDataText>
+								</AnimeDataContainerBottom>
+							</ParentContainer>
+						</AnimeDataText>
+					</AnimeDataContainerTop>
+					{isScreenUnder500px() && animeData.description && (
+						<AnimeDataText>
+							<p className="Description">
+								<strong>Description: </strong>
+								<ShowMoreButton onClick={toggleDescription}>
+									{isDescriptionExpanded
+										? removeHTMLTags(animeData.description)
+										: `${removeHTMLTags(animeData.description).substring(0, 150)}...`}
+									{isDescriptionExpanded ? "[Show Less]" : "[Show More]"}
+								</ShowMoreButton>
+							</p>
+						</AnimeDataText>
+					)}
+				</AnimeDataContainer>
+			)}
+			{animeData.relations?.some(
+				(relation: any) =>
+					relation.relationType.toUpperCase() === "PREQUEL" ||
+					relation.relationType.toUpperCase() === "SEQUEL",
+			) && (
+				<>
+					<AnimeDataText>
+						<p className="Seasons-Sections-Titles">SEASONS</p>
+						<Seasons
+							relations={animeData.relations.filter(
+								(relation: any) =>
+									relation.relationType.toUpperCase() === "PREQUEL" ||
+									relation.relationType.toUpperCase() === "SEQUEL",
+							)}
+						/>
+					</AnimeDataText>
+				</>
+			)}
+		</>
+	);
 };

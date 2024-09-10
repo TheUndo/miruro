@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Relation } from '../../index';
+import type React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import type { Relation } from "../../index";
 
 const SeasonCardContainer = styled.div`
   display: flex;
@@ -90,41 +90,41 @@ const RelationType = styled.div`
 `;
 
 export const Seasons: React.FC<{ relations: Relation[] }> = ({ relations }) => {
-  const sortedRelations = relations.sort((a, b) => {
-    if (a.relationType === 'PREQUEL' && b.relationType !== 'PREQUEL') {
-      return -1;
-    }
-    if (a.relationType !== 'PREQUEL' && b.relationType === 'PREQUEL') {
-      return 1;
-    }
-    return 0;
-  });
+	const sortedRelations = relations.sort((a, b) => {
+		if (a.relationType === "PREQUEL" && b.relationType !== "PREQUEL") {
+			return -1;
+		}
+		if (a.relationType !== "PREQUEL" && b.relationType === "PREQUEL") {
+			return 1;
+		}
+		return 0;
+	});
 
-  return (
-    <SeasonCardContainer>
-      {sortedRelations.map((relation) => (
-        <SeasonCard
-          key={relation.id}
-          to={`/watch/${relation.id}`}
-          title={`Watch ${relation.title.english || relation.title.romaji || relation.title.userPreferred}`}
-          aria-label={`Watch ${relation.title.english || relation.title.romaji || relation.title.userPreferred}`}
-          style={{ backgroundImage: `url(${relation.image})` }}
-        >
-          <img
-            src={relation.image}
-            alt={`${relation.title.english || relation.title.romaji || relation.title.userPreferred} Cover`}
-            style={{ display: 'none' }}
-          />
-          <Content>
-            <RelationType>{relation.relationType}</RelationType>
-            <SeasonName>
-              {relation.title.english ||
-                relation.title.romaji ||
-                relation.title.userPreferred}
-            </SeasonName>
-          </Content>
-        </SeasonCard>
-      ))}
-    </SeasonCardContainer>
-  );
+	return (
+		<SeasonCardContainer>
+			{sortedRelations.map((relation) => (
+				<SeasonCard
+					key={relation.id}
+					to={`/watch/${relation.id}`}
+					title={`Watch ${relation.title.english || relation.title.romaji || relation.title.userPreferred}`}
+					aria-label={`Watch ${relation.title.english || relation.title.romaji || relation.title.userPreferred}`}
+					style={{ backgroundImage: `url(${relation.image})` }}
+				>
+					<img
+						src={relation.image}
+						alt={`${relation.title.english || relation.title.romaji || relation.title.userPreferred} Cover`}
+						style={{ display: "none" }}
+					/>
+					<Content>
+						<RelationType>{relation.relationType}</RelationType>
+						<SeasonName>
+							{relation.title.english ||
+								relation.title.romaji ||
+								relation.title.userPreferred}
+						</SeasonName>
+					</Content>
+				</SeasonCard>
+			))}
+		</SeasonCardContainer>
+	);
 };
