@@ -25,3 +25,10 @@ services:
       dockerfile: Dockerfile.nginx
     ports:
       - ${PORT}:80
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.server
+    ports:
+      - 4000:4000

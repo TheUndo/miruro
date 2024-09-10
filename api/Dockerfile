@@ -1,4 +1,4 @@
-FROM node:20 as builder
+FROM node:20 AS builder
 
 LABEL version="1.0.0"
 LABEL description="Consumet API (fastify) Docker Image"
