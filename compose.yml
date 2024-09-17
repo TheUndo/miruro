@@ -19,7 +19,7 @@ services:
     volumes:
       - ./etc/redis-data:/data
 
-  proxy:
+  nginx:
     build:
       context: .
       dockerfile: Dockerfile.nginx

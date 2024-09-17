@@ -1,5 +1,5 @@
 {
-	"name": "miruro",
+	"name": "@undo/root",
 	"module": "index.ts",
 	"type": "module",
 	"devDependencies": {
@@ -12,6 +12,8 @@
 	"workspaces": [
 		"frontend",
 		"api",
-		"server"
+		"server",
+		"config",
+		"nginx"
 	]
 }

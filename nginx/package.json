@@ -1,0 +1,11 @@
+{
+  "name": "@undo/nginx",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "@undo/config": "workspace:*"
+  },
+  "scripts": {
+    "start": "bun run index.ts"
+  }
+}

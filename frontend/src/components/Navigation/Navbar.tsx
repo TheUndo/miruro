@@ -1,7 +1,8 @@
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
-import { FiMoon, FiSun, FiX /* FiMenu */ } from "react-icons/fi";
+import { FiMoon, FiSun, FiX } from "react-icons/fi";
+import { FaDiscord } from "react-icons/fa";
 import { GoCommandPalette } from "react-icons/go";
 import { IoIosSearch } from "react-icons/io";
 import {
@@ -10,7 +11,7 @@ import {
 	useNavigate,
 	useSearchParams,
 } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { type Anime, fetchAdvancedSearch } from "../..";
 import { DropDownSearch, useAuth } from "../../index";
 
@@ -157,7 +158,7 @@ const ClearButton = styled.button<{ $query: string }>`
   }
 `;
 
-const StyledButton = styled.button<{ isInputToggle?: boolean }>`
+const buttonStyle = css<{ isInputToggle?: boolean }>`
   background: transparent;
   background-color: var(--global-div);
   color: var(--global-text);
@@ -183,6 +184,14 @@ const StyledButton = styled.button<{ isInputToggle?: boolean }>`
     display: flex;
     margin: ${({ isInputToggle }) => (isInputToggle ? "0" : "0")};
   }
+`;
+
+const StyledButton = styled.button<{ isInputToggle?: boolean }>`
+  ${buttonStyle}
+`;
+const StyledLinkButton = styled.a<{ isInputToggle?: boolean }>`
+  ${buttonStyle};
+	height: 0;
 `;
 
 const SlashToggleBtn = styled.div<{ $isFocused: boolean }>`
@@ -519,6 +528,16 @@ export const Navbar = () => {
 									<IoIosSearch />
 								</StyledButton>
 							)}
+
+							<StyledLinkButton
+								target="_blank"
+								href="https://discord.gg/RdxXASy"
+								rel="noreferrer"
+								onClick={toggleTheme}
+								aria-label="Discord"
+							>
+								<FaDiscord />
+							</StyledLinkButton>
 							<StyledButton onClick={toggleTheme} aria-label="Toggle Dark Mode">
 								{isDarkMode ? <FiSun /> : <FiMoon />}
 							</StyledButton>

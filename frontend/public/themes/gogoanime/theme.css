@@ -1,0 +1,9 @@
+:root {
+  --primary-accent: #FFC01A;
+  --primary-accent-bg: #ffbb0d;
+  --logo-text-transparent: url("/themes/gogoanime/logo-light.svg");
+}
+
+:root.dark-mode {
+  --logo-text-transparent: url("/themes/gogoanime/logo-dark.svg");
+}

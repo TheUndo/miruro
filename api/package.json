@@ -1,5 +1,5 @@
 {
-	"name": "api.consumet.org",
+	"name": "@undo/consumet",
 	"version": "1.0.0",
 	"main": "src/main.ts",
 	"scripts": {

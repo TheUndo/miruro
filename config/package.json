@@ -1,0 +1,5 @@
+{
+  "name": "@undo/config",
+  "module": "index.ts",
+  "type": "module"
+}
